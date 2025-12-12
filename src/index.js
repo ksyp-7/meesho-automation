@@ -1,30 +1,15 @@
-// puppeteer.js
 const puppeteer = require("puppeteer");
 
-async function launchBrowser() {
-  return puppeteer.launch({
-    headless: true,
-    defaultViewport: null,
-  });
-}
-
-async function openGithub(page) {
-  await page.goto("https://supplier.meesho.com/panel/v3/new/root/login", {
-    waitUntil: "networkidle2",
-  });
-}
-
-// async function clickLogin(page) {
-//   await page.waitForSelector('a[href="/login"]');
-//   await page.click('a[href="/login"]');
-// }
-
 (async () => {
-  const browser = await launchBrowser();
-  const page = await browser.newPage();
+  const browser = await puppeteer.launch({
+    headless: "new",
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
 
-  await openGithub(page);
-  //   await clickLogin(paccge);
-  console.log("ABLE TO OPEN PANEL");
+  const page = await browser.newPage();
+  await page.goto("https://github.com", { waitUntil: "networkidle2" });
+
+  console.log("GitHub opened successfully");
+
   await browser.close();
 })();
